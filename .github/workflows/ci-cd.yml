@@ -6,42 +6,42 @@ on:
       - main
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:  
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-      - run: yarn
-      - run: yarn lint
-      
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          token: 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
-          node-version: 16
-          cache: 'yarn'
+          node-version: '14' # Use the Node.js version required for your project
+
+      - name: Cache Dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: npm-
 
       - name: Install Dependencies
         run: yarn
 
-      - name: Build and Test
+      - name: Run Tests
+        run: yarn test
+
+      - name: Build Application
         run: yarn build
 
-  deploy:
-    runs-on: ubuntu-latest
-
-    needs: build
-    steps:
       - name: Deploy to Production
         run: |
-          # Add your deployment steps here
-          # For example, deploying to a server or a cloud service
+          # Here, you would add the deployment steps specific to your project.
+          # This can include copying files to a server, deploying to a cloud platform, etc.
+          # Replace the following with your actual deployment steps.
+
+          # Example: Deploy to a hypothetical server using SSH
+          ssh user@server.example.com "cd /path/to/your/app && git pull origin main && restart-your-app"
+
+          # Ensure that you have SSH access and the necessary permissions set up for this to work.
+
