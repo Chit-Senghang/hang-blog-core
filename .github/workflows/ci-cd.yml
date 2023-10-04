@@ -18,6 +18,7 @@ jobs:
         with:
           token: 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
           node-version: 16
+          cache: 'yarn'
 
       - name: Install Dependencies
         run: yarn
