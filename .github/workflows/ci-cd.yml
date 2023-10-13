@@ -9,16 +9,19 @@ jobs:
       - name: Get Code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+      - name: Setup SSH Key
+        run: echo "My secrets is ${{ secrets.PERSON_GITHUB_TOKEN }}"
 
-      - name: Install Yarn
-        run: npm install -g yarn
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '18'
 
-      - name: Install Dependencies
-        run: yarn
+      # - name: Install Yarn
+      #   run: npm install -g yarn
 
-      - name: Run Lint
-        run: yarn lint
+      # - name: Install Dependencies
+      #   run: yarn
+
+      # - name: Run Lint
+      #   run: yarn lint
