@@ -1,34 +1,22 @@
-name: CI/CD Workflow
-
-on:
-  push:
-    branches:
-      - main
-
+name: Node CI
+on: push
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
+      - name: Get Code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          token: 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
-          node-version: 16
-          cache: 'yarn'
+          node-version: '18'
 
-      # - name: Install Dependencies
-        # run: yarn install --force
+      - name: Install Yarn
+        run: npm install -g yarn
 
-  deploy:
-    runs-on: ubuntu-latest
+      - name: Install Dependencies
+        run: yarn
 
-    needs: build
-    steps:
-      - name: Deploy to Production
-        run: |
-          # Add your deployment steps here
-          # For example, deploying to a server or a cloud service
+      - name: Run Lint
+        run: yarn lint
