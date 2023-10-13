@@ -11,6 +11,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+        env:
+            MY_ACCESS_TOKEN: ${{ secrets.PERSON_GITHUB_TOKEN }}
 
       - name: Install Yarn
         run: npm install -g yarn
