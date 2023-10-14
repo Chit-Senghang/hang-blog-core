@@ -3,6 +3,7 @@ on: push
 jobs:
   lint:
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - name: Get Code
         uses: actions/checkout@v3
@@ -15,8 +16,8 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
 
-      # - name: Install Dependencies
-      #   run: yarn
+      - name: Install Dependencies
+        run: yarn
 
-      # - name: Run Lint
-      #   run: yarn lint
+      - name: Run Lint
+        run: yarn lint
