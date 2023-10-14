@@ -1,5 +1,5 @@
-name: Test Lint
-on: push
+name: Jeager Workflow
+on: workflow_dispatch
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -48,12 +48,20 @@ jobs:
     steps:
       - name: Get Code
         uses: actions/checkout@v3
+
       - name: Upload Artiface
         uses: actions/upload-artifact@v3
         with:
           name: dist-files
-          path: dist ./artifact
+          path: ./dist
 
+      - name: Download Files
+        uses: actions/download-artifact@v3
+        with:
+          path: ./dist
+      
       - name: Display Files
-        run: ls
+        run: ls -R
+          
+
 
