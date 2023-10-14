@@ -70,9 +70,9 @@ jobs:
 
       - name: Try Connect Server
         run: |
-         ./scripts/setup-ssh.sh
+          bash ./scripts/setup-ssh.sh
 
-         echo "Server Connected..."
+          echo "Server Connected..."
 
           
 
