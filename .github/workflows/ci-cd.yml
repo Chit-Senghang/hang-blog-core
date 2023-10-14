@@ -7,11 +7,6 @@ jobs:
       - name: Get Code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
       - name: Cache Dependency
         uses: actions/cache@v3
         id: cache
@@ -25,3 +20,23 @@ jobs:
 
       - name: Run Lint
         run: npm run lint
+
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+
+      - name: Cache Dependency
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Let Build
+        run: npm run build
