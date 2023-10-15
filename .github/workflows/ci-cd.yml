@@ -66,9 +66,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist-files
-      
-      - name: Display Files
-        run: ls -R
 
       - name: Setup ssh
         run: |
@@ -77,6 +74,7 @@ jobs:
       - name: Connect Server
         run: | 
           bash ./scripts/connect-server.sh
+          rsync -avz dist-files ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/deploy
           
 
 
