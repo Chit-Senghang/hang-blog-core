@@ -72,7 +72,7 @@ jobs:
         run: |
           bash ./scripts/setup-ssh.sh
 
-          echo "Server Connected..."
+          ls -R
 
           
 
