@@ -77,8 +77,6 @@ jobs:
       - name: Connect Server
         run: | 
           bash ./scripts/connect-server.sh
-
-          ls -R
           
 
 
