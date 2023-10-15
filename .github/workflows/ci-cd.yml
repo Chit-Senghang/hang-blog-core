@@ -74,7 +74,7 @@ jobs:
         run: | 
           bash ./scripts/connect-server.sh
 
-          rsync -n ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/deploy
+          rsync -n ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/root/deploy
           
 
 
