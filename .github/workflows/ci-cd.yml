@@ -67,14 +67,15 @@ jobs:
         with:
           name: dist-files
 
-      - name: Setup ssh
-        run: |
-          bash ./scripts/setup-ssh.sh
+      # - name: Setup ssh
+      #   run: |
+      #     bash ./scripts/setup-ssh.sh
       
       - name: Connect Server
         run: | 
           bash ./scripts/connect-server.sh
-          rsync -avz dist-files ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/deploy
+          ls -R
+          # rsync -avz ./dist-files ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/deploy
           
 
 
