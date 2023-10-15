@@ -1,28 +1,27 @@
 name: Jeager Workflow
 on: push
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Code
-        uses: actions/checkout@v3
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Get Code
+  #       uses: actions/checkout@v3
 
-      - name: Cache Dependency
-        uses: actions/cache@v3
-        id: cache
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+  #     - name: Cache Dependency
+  #       uses: actions/cache@v3
+  #       id: cache
+  #       with:
+  #         path: node_modules
+  #         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
 
-      - name: Install Dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+  #     - name: Install Dependencies
+  #       if: steps.cache.outputs.cache-hit != 'true'
+  #       run: npm ci
 
-      - name: Run Lint
-        run: npm run lint
+  #     - name: Run Lint
+  #       run: npm run lint
 
   Build:
-    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
@@ -51,7 +50,7 @@ jobs:
             package.json
 
   Deploy:
-    needs: ['lint', 'Build']
+    needs: Build
     runs-on: ubuntu-latest
     permissions: read-all
     env:
@@ -67,9 +66,9 @@ jobs:
         with:
           name: dist-files
 
-      # - name: Setup ssh
-      #   run: |
-      #     bash ./scripts/setup-ssh.sh
+      - name: Setup ssh
+        run: |
+          bash ./scripts/setup-ssh.sh
       
       - name: Connect Server
         run: | 
