@@ -1,25 +1,25 @@
-name: Jeager Workflow
-on: push
+name: Deploy Without Docker
+on: pull_request
 jobs:
-  # lint:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Get Code
-  #       uses: actions/checkout@v3
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
 
-  #     - name: Cache Dependency
-  #       uses: actions/cache@v3
-  #       id: cache
-  #       with:
-  #         path: node_modules
-  #         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+      - name: Cache Dependency
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
 
-  #     - name: Install Dependencies
-  #       if: steps.cache.outputs.cache-hit != 'true'
-  #       run: npm ci
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
 
-  #     - name: Run Lint
-  #       run: npm run lint
+      - name: Run Lint
+        run: npm run lint
 
   Build:
     runs-on: ubuntu-latest
@@ -70,7 +70,7 @@ jobs:
       - name: Verification SSH
         run: bash ./scripts/verification-ssh.sh
       
-      - name: Deploy Server 
+      - name: Deploy Server
         run: | 
           bash ./scripts/connect-server.sh
 
