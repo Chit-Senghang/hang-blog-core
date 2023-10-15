@@ -66,15 +66,15 @@ jobs:
         with:
           name: dist-files
 
-      - name: Setup ssh
+      - name: Adding Known Hosts
         run: |
           bash ./scripts/setup-ssh.sh
       
       - name: Connect Server
         run: | 
           bash ./scripts/connect-server.sh
-          ls -R
-          rsync -avz ./dist-files ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/deploy
+
+          rsync -n ./dist-files ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/deploy
           
 
 

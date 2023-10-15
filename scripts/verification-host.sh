@@ -1,0 +1,1 @@
+ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
