@@ -55,6 +55,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions: read-all
     env:
+      SERVER_IP: ${{ secrets.SERVER_IP }}
+      SSH_USER: ${{ secrets.SSH_USER }}
       SERVER_SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
     steps:
       - name: Get Code
@@ -68,12 +70,15 @@ jobs:
       - name: Display Files
         run: ls -R
 
-      - name: Try Connect Server
+      - name: Setup ssh
         run: |
           bash ./scripts/setup-ssh.sh
+      
+      - name: Connect Server
+        run: | 
+          base ./scripts/connect-server.sh
 
           ls -R
-
           
 
 

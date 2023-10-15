@@ -1,0 +1,2 @@
+ssh -i "$SERVER_SSH_PRIVATE_KEY" "$SSH_USER@$SERVER_IP"
+sleep 15
