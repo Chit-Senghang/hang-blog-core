@@ -66,11 +66,10 @@ jobs:
         with:
           name: dist-files
 
-      - name: Adding Known Hosts
-        run: |
-          bash ./scripts/verification-host.sh
+      - name: Verification SSH
+        run: bash ./scripts/verification-ssh.sh
       
-      - name: Connect Server
+      - name: Deploy Server 
         run: | 
           bash ./scripts/connect-server.sh
 
