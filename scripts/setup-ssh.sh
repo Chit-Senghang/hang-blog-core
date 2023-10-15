@@ -1,4 +1,3 @@
-
 mkdir -p ~/.ssh
 chmod 777 ~/.ssh
 echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
