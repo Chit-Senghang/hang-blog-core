@@ -17,7 +17,7 @@ jobs:
         #     password: ${{ secrets.DOCKERHUB_TOKEN }}
 
         - name: Display Connected
-          run: echo "Connect Successful... ${{ toJson(secrets) }}"
+          run: echo "Connect Successful... ${{ secrets.DOCKERHUB_USERNAME }}"
 
         - name: Build and push
           uses: docker/build-push-action@v5
