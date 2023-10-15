@@ -68,7 +68,7 @@ jobs:
 
       - name: Adding Known Hosts
         run: |
-          bash ./scripts/setup-ssh.sh
+          bash ./scripts/verification-host.sh
       
       - name: Connect Server
         run: | 
