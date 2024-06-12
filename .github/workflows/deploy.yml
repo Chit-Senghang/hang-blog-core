@@ -1,5 +1,6 @@
-name: Deploy Without Docker
-on: pull_request
+name: Deploy to server
+on: push
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -9,58 +10,60 @@ jobs:
 
       - name: Cache Dependency
         uses: actions/cache@v3
-        id: cache
         with:
           path: node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       - name: Run Lint
-        run: npm run lint
+        run: yarn lint
 
-  Build:
+  build:
     runs-on: ubuntu-latest
+    needs: lint
     steps:
       - name: Get Code
         uses: actions/checkout@v3
 
       - name: Cache Dependency
         uses: actions/cache@v3
-        id: cache
         with:
           path: node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       - name: Let Build
-        run: npm run build
+        run: yarn build
 
       - name: Upload Artiface
         uses: actions/upload-artifact@v3
         with:
           name: dist-files
-          path: | 
+          path: |
             dist
             package.json
 
-  Deploy:
-    needs: Build
+  deploy:
     runs-on: ubuntu-latest
-    permissions: read-all
+    needs: build
+    permissions:
+      contents: read
+      packages: write
     env:
       SERVER_IP: ${{ secrets.SERVER_IP }}
       SSH_USER: ${{ secrets.SSH_USER }}
       SERVER_SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
     steps:
-      - name: Get Code
-        uses: actions/checkout@v3
-
       - name: Download Files
         uses: actions/download-artifact@v3
         with:
@@ -69,12 +72,8 @@ jobs:
 
       - name: Verification SSH
         run: bash ./scripts/verification-ssh.sh
-      
+
       - name: Deploy Server
-        run: | 
+        run: |
           bash ./scripts/connect-server.sh
-
           rsync -avz ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/root/deploy
-          
-
-
