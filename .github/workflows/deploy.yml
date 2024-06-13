@@ -43,18 +43,18 @@ jobs:
       - name: Let Build
         run: yarn build
 
-      - name: Upload Artiface
-        run: |
-          mkdir -p dist_files
-          cp -r dist dist_files/
-          cp package.json dist_files/
-        continue-on-error: true
+      # - name: Upload Artiface
+      #   run: |
+      #     mkdir -p dist_files
+      #     cp -r dist dist_files/
+      #     cp package.json dist_files/
+      #   continue-on-error: true
 
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dist-files
-          path: dist_files
+      # - name: Archive artifacts
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: dist-files
+      #     path: dist_files
 
   deploy:
     runs-on: ubuntu-latest
@@ -66,12 +66,12 @@ jobs:
       SERVER_IP: ${{ secrets.SERVER_IP }}
       SSH_USER: ${{ secrets.SSH_USER }}
       SERVER_SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-    steps:
-      - name: Download Files
-        uses: actions/download-artifact@v2
-        with:
-          name: dist-files
-          path: dist_files
+    # steps:
+    #   - name: Download Files
+    #     uses: actions/download-artifact@v2
+    #     with:
+    #       name: dist-files
+    #       path: dist_files
 
       - name: Verification SSH
         run: bash ./scripts/verification-ssh.sh
