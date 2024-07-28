@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         // Define the SonarQube scanner tool
-        sonarScanner 'SonarQubeServer'
+        sonarScanner 'SonarQubeScanner'
     }
 
     environment {
