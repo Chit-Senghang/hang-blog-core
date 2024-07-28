@@ -1,6 +1,16 @@
 pipeline {
     agent any
 
+    tools {
+        // Define the SonarQube scanner tool
+        sonarScanner 'SonarQube Scanner'
+    }
+
+    environment {
+        // Define SonarQube environment variables
+        SONARQUBE_SERVER = 'SonarQubeServer' // Name of the SonarQube server configured in Jenkins
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -16,6 +26,17 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    // Run SonarQube scan
+                    withSonarQubeEnv('SonarQubeServer') {
+                        sh 'sonar-scanner'
+                    }
+                }
+            }
+        }
+
         stage('Test') {
             steps {
                 // Run your test commands here
@@ -28,6 +49,21 @@ pipeline {
                 // Run your deploy commands here
                 echo 'Deploying...'
             }
+        }
+    }
+
+    post {
+        always {
+            // Clean up workspace
+            cleanWs()
+        }
+        success {
+            // Optionally perform actions on successful completion
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            // Optionally perform actions on failure
+            echo 'Pipeline failed!'
         }
     }
 }
