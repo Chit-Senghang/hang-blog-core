@@ -2,9 +2,6 @@ pipeline {
     agent {
         label 'selt-host'
     }
-    environment {
-        // Define any environment variables here if needed
-    }
     stages {
         stage('Lint') {
             tools {
