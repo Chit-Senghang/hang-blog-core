@@ -2,14 +2,15 @@ pipeline {
     agent {
         label 'selt-host'
     }
+    tools {
+        nodejs 'NodeJS-20' // Ensure this is configured correctly in Jenkins
+    }
     stages {
         stage('Lint') {
-            tools {
-                nodejs 'NodeJS-20'
-            }
             steps {
                 script {
-                    sh 'yarn lint'
+                    sh 'yarn install' // Ensure dependencies are installed
+                    sh 'yarn lint'    // Run the lint command
                 }
             }
         }
