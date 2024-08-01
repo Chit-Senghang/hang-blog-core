@@ -2,15 +2,20 @@ pipeline {
     agent {
         label 'selt-host'
     }
+    environment {
+        MY_VAR = 'sonar-scanner'
+        SLACK_CHANNELID = 'C07ESHQRANR'
+        BUILD_URL = 'https://github.com/Chit-Senghang/hang-blog-core/edit/main/Jenkinsfile'
+    }
     tools {
-        nodejs 'NodeJS-20' // Ensure this is configured correctly in Jenkins
+        nodejs 'NodeJS-20'
     }
     stages {
         stage('Lint') {
             steps {
                 script {
-                    sh 'yarn install' // Ensure dependencies are installed
-                    sh 'yarn lint'    // Run the lint command
+                    sh 'yarn install'
+                    sh 'yarn lint'
                 }
             }
         }
@@ -41,9 +46,12 @@ pipeline {
     }
     post {
         success {
-            script {
-                echo 'Build succeeded!'
-            }
+             slackSend(
+                channel: env.SLACK_CHANNELID,
+                color: "#13d43a",
+                message: "ID: Name: $JOB_NAME \n Status: Success \n Message: $SLACK_MSG_SUCCESS \n Report: $BUILD_URL",
+                sendAsText: false
+            )
         }
         failure {
             script {
