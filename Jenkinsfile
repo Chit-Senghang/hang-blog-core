@@ -3,9 +3,8 @@ pipeline {
         label 'selt-host'
     }
     environment {
-        MY_VAR = 'sonar-scanner'
         SLACK_CHANNELID = 'C07ESHQRANR'
-        BUILD_URL = 'https://github.com/Chit-Senghang/hang-blog-core/edit/main/Jenkinsfile'
+        SLACK_TOKEN = credentials('SLACK_CHANNEL_TOKEN')
     }
     tools {
         nodejs 'NodeJS-20'
@@ -49,7 +48,7 @@ pipeline {
              slackSend(
                 channel: env.SLACK_CHANNELID,
                 color: "#13d43a",
-                message: "ID: Name: $JOB_NAME \n Status: Success \n Message: $SLACK_MSG_SUCCESS \n Report: $BUILD_URL",
+                message: "ID: Name:Status: Success",
                 sendAsText: false
             )
         }
@@ -57,7 +56,7 @@ pipeline {
             slackSend(
                 channel: env.SLACK_CHANNELID,
                 color: "#13d43a",
-                message: "ID: Name: $JOB_NAME \n Status: Success \n Message: $SLACK_MSG_SUCCESS \n Report: $BUILD_URL",
+                message: "ID: Name: Status: Failure",
                 sendAsText: false
             )
         }
