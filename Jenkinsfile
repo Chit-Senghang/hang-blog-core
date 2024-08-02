@@ -54,9 +54,12 @@ pipeline {
             )
         }
         failure {
-            script {
-                echo 'Build failed!'
-            }
+            slackSend(
+                channel: env.SLACK_CHANNELID,
+                color: "#13d43a",
+                message: "ID: Name: $JOB_NAME \n Status: Success \n Message: $SLACK_MSG_SUCCESS \n Report: $BUILD_URL",
+                sendAsText: false
+            )
         }
         always {
             script {
