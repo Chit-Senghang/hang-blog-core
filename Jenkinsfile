@@ -3,8 +3,7 @@ pipeline {
         label 'selt-host'
     }
     environment {
-        SLACK_GENERAL_CHANNEL = 'C07F2MYJGP9'
-        SLACK_GENERAL = credentials('SLACK_GENERAL')
+        SLACK_GENERAL_CHANNEL = '#private-test'
     }
     tools {
         nodejs 'NodeJS-20'
