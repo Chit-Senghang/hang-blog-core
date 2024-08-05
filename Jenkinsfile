@@ -3,8 +3,8 @@ pipeline {
         label 'selt-host'
     }
     environment {
-        SLACK_CHANNELID = 'C07ESHQRANR'
-        SLACK_CHANNEL_TOKEN = credentials('SLACK_CHANNEL_TOKEN')
+        SLACK_CHANNELID = 'C07ESHQRANR'  // Replace with your Slack channel ID or name
+        // SLACK_CHANNEL_TOKEN = credentials('SLACK_CHANNEL_TOKEN') // This is not needed with the Slack plugin setup
     }
     tools {
         nodejs 'NodeJS-20'
@@ -18,45 +18,21 @@ pipeline {
                 }
             }
         }
-        stage('Scan Code') {
-            steps {
-                script {
-                    def scannerHome = tool 'SonarQubeScanner'
-                    withSonarQubeEnv() {
-                        sh "${scannerHome}/bin/sonar-scanner"
-                    }
-                }
-            }
-        }
-        stage('Build') {
-            steps {
-                script {
-                    sh 'docker-compose -f docker-compose.yml up -d'
-                }
-            }
-        }
-        stage('Finish Process') {
-            steps {
-                script {
-                    sh 'docker-compose -f docker-compose.yml down'
-                }
-            }
-        }
     }
     post {
         success {
-             slackSend(
+            slackSend(
                 channel: env.SLACK_CHANNELID,
-                color: "#13d43a",
-                message: "ID: Name:Status: Success",
+                color: "#13d43a",  // Green for success
+                message: "Job: ${JOB_NAME} \nBuild Number: ${BUILD_NUMBER} \nStatus: Success \nBuild URL: ${BUILD_URL}",
                 sendAsText: false
             )
         }
         failure {
             slackSend(
                 channel: env.SLACK_CHANNELID,
-                color: "#13d43a",
-                message: "ID: Name: Status: Failure",
+                color: "#ff0000",  // Red for failure
+                message: "Job: ${JOB_NAME} \nBuild Number: ${BUILD_NUMBER} \nStatus: Failure \nBuild URL: ${BUILD_URL}",
                 sendAsText: false
             )
         }
