@@ -4,7 +4,7 @@ pipeline {
     }
     environment {
         SLACK_CHANNELID = 'C07ESHQRANR'
-        SLACK_TOKEN = credentials('SLACK_CHANNEL_TOKEN')
+        SLACK_CHANNEL_TOKEN = credentials('SLACK_CHANNEL_TOKEN')
     }
     tools {
         nodejs 'NodeJS-20'
